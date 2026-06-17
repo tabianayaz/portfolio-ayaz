@@ -136,7 +136,7 @@ export default function Contact() {
             </div>
 
             {/* Social Grid (Right) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 shrink-0 w-full md:w-auto">
+            <div className="flex flex-col gap-3 w-full sm:w-[240px] shrink-0">
               {/* GitHub */}
               <a
                 href="https://github.com/tabianayaz"
