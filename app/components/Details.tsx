@@ -68,8 +68,6 @@ export default function Details() {
     { name: language === 'jp' ? '日本語能力試験 N2' : 'Japanese Language Proficiency Test (JLPT) N2' },
     { name: language === 'jp' ? '情報処理技術者能力認定試験 3級' : 'Information Processing Engineer Certification - Grade 3' },
     { name: language === 'jp' ? 'Webクリエイター能力認定試験 / HTML5 スタンダード' : 'Web Creator Certification / HTML5 Standard' },
-    { name: language === 'jp' ? '基本情報技術者試験' : 'Fundamental Information Technology Engineer Examination' },
-    { name: 'Microsoft Certified: Azure Fundamentals (AZ-900)' },
     { name: language === 'jp' ? 'Duolingo English Test (100点)' : 'Duolingo English Test (Score: 100)' },
   ];
 

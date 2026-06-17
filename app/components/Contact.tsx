@@ -136,15 +136,15 @@ export default function Contact() {
             </div>
 
             {/* Social Grid (Right) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 shrink-0 w-full md:w-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 shrink-0 w-full md:w-auto">
               {/* GitHub */}
               <a
                 href="https://github.com/tabianayaz"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-white/[0.03] border border-white/[0.08] hover:border-primary/50 hover:bg-white/[0.06] rounded-xl transition-all hover:scale-102 cursor-pointer"
+                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
               >
-                <Github className="w-4 h-4 text-gray-text" />
+                <Github className="w-4 h-4 text-white" />
                 <span>{t.github}</span>
               </a>
 
@@ -153,29 +153,20 @@ export default function Contact() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-white/[0.03] border border-white/[0.08] hover:border-secondary/50 hover:bg-white/[0.06] rounded-xl transition-all hover:scale-102 cursor-pointer"
+                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
               >
-                <Linkedin className="w-4 h-4 text-gray-text" />
+                <Linkedin className="w-4 h-4 text-white" />
                 <span>{t.linkedin}</span>
               </a>
 
-              {/* Send Email direct mailto */}
-              <a
-                href={`mailto:${personalEmail}`}
-                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
-              >
-                <Send className="w-4 h-4 text-white" />
-                <span>{t.email}</span>
-              </a>
-
-              {/* Resume download */}
+              {/* Resume request */}
               <a
                 href="https://forms.gle/MsnTkj5ovFbfjGEi7"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-white/[0.03] border border-white/[0.08] hover:border-primary/50 hover:bg-white/[0.06] rounded-xl transition-all hover:scale-102 cursor-pointer"
+                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
               >
-                <FileDown className="w-4 h-4 text-gray-text animate-pulse" />
+                <FileDown className="w-4 h-4 text-white animate-pulse" />
                 <span>{t.resume}</span>
               </a>
             </div>

@@ -127,7 +127,7 @@ export const dictionary = {
       github: 'GitHub',
       linkedin: 'LinkedIn',
       email: 'Emailを送信',
-      resume: '履歴書をダウンロード',
+      resume: '履歴書を請求',
       copied: 'コピーしました！',
       copyEmail: 'メールアドレスをコピー'
     },
@@ -262,7 +262,7 @@ export const dictionary = {
       github: 'GitHub',
       linkedin: 'LinkedIn',
       email: 'Send Email',
-      resume: 'Download Resume',
+      resume: 'Resume Request',
       copied: 'Copied to clipboard!',
       copyEmail: 'Copy Email Address'
     },
