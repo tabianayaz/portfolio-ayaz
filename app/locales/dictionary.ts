@@ -68,11 +68,11 @@ export const dictionary = {
           description: 'PythonとOpenCVを利用したAI画像認識システム。みかんが新鮮か腐っているかを高精度で判定するAI。',
           tags: ['Python', 'OpenCV', 'AI', 'Image Processing']
         },
-        subsc: {
-          title: 'サブスケ',
+        azureChat: {
+          title: 'Azure AI Chat',
           category: 'Web App',
-          description: '毎月のサブスクリプション料金を一元管理できるサービス。料金推移や次回の支払い日をダッシュボードで視覚化。',
-          tags: ['React', 'Next.js', 'TypeScript', 'TailwindCSS']
+          description: 'Azure OpenAI Serviceを活用した安全で高機能なAIチャットウェブアプリケーション。ユーザーアカウント管理、メッセージ履歴保存、詳細なチャット設定機能を搭載。',
+          tags: ['React', 'Next.js', 'TypeScript', 'Azure OpenAI']
         }
       }
     },
@@ -203,11 +203,11 @@ export const dictionary = {
           description: 'Computer vision classification model utilizing Python and OpenCV to detect and judge the freshness of mandarins in real-time.',
           tags: ['Python', 'OpenCV', 'AI', 'Image Processing']
         },
-        subsc: {
-          title: 'Subsc Manager',
+        azureChat: {
+          title: 'Azure AI Chat',
           category: 'Web App',
-          description: 'A subscription tracking web portal allowing users to aggregate recurring bills, view monthly cost forecasts, and set billing alerts.',
-          tags: ['React', 'Next.js', 'TypeScript', 'TailwindCSS']
+          description: 'An AI conversational web application powered by Azure OpenAI Service, featuring user account authentication, chat session history persistence, and custom model parameter adjustments.',
+          tags: ['React', 'Next.js', 'TypeScript', 'Azure OpenAI']
         }
       }
     },

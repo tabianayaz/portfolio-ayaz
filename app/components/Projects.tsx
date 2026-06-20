@@ -40,22 +40,15 @@ export default function Projects() {
     }, 1200);
   };
 
-  // 3. Subsc Manager Dashboard State
-  const [subscTotal, setSubscTotal] = useState(8450);
-  const [activeSubscs, setActiveSubscs] = useState([
-    { name: 'Azure Cloud', cost: 5980, active: true },
-    { name: 'Netflix Premium', cost: 1490, active: true },
-    { name: 'Spotify Duo', cost: 980, active: true }
-  ]);
-
-  const toggleSubsc = (index: number) => {
-    const updated = [...activeSubscs];
-    updated[index].active = !updated[index].active;
-    setActiveSubscs(updated);
-
-    const sum = updated.reduce((acc, curr) => curr.active ? acc + curr.cost : acc, 0);
-    setSubscTotal(sum);
-  };
+  // 3. Azure AI Chat State
+  const [activeAzureScreenIdx, setActiveAzureScreenIdx] = useState(0);
+  const azureScreenshots = [
+    { src: '/azure login ss.png', jpName: 'ログイン画面', enName: 'Login Screen' },
+    { src: '/azure create account ss.png', jpName: 'アカウント作成', enName: 'Registration' },
+    { src: '/azure ai chat ss.png', jpName: 'AI対話画面', enName: 'AI Conversation' },
+    { src: '/azure user chat ss.png', jpName: 'チャット履歴', enName: 'Chat History' },
+    { src: '/azure setting ss.png', jpName: 'パラメータ設定', enName: 'Model Settings' }
+  ];
 
   return (
     <section id="projects" className="relative py-24 px-6 overflow-hidden">
@@ -274,7 +267,7 @@ export default function Projects() {
             </div>
           </motion.div>
 
-          {/* Card 4: Subsc Manager Web App */}
+          {/* Card 4: Azure AI Chat Web App */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -284,16 +277,16 @@ export default function Projects() {
           >
             <div className="mb-6">
               <span className="text-xs font-bold uppercase tracking-widest text-purple-400">
-                {items.subsc.category}
+                {items.azureChat.category}
               </span>
               <h3 className="text-2xl font-bold text-foreground mt-1 mb-3">
-                {items.subsc.title}
+                {items.azureChat.title}
               </h3>
               <p className="text-sm text-gray-text font-light leading-relaxed select-text">
-                {items.subsc.description}
+                {items.azureChat.description}
               </p>
               <div className="flex flex-wrap gap-2 mt-4">
-                {items.subsc.tags.map((tag, idx) => (
+                {items.azureChat.tags.map((tag, idx) => (
                   <span key={idx} className="px-2.5 py-0.5 text-[11px] rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
                     {tag}
                   </span>
@@ -301,45 +294,48 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* Interactive Billing Manager Dashboard */}
-            <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col justify-between min-h-[220px]">
-              <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-3">
-                <div className="flex items-center space-x-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-purple-400" />
-                  <span className="text-[10px] font-bold text-gray-text uppercase">{t.demoDashboard}</span>
-                </div>
-                <span className="text-sm font-bold text-white font-mono">
-                  {language === 'jp' ? `月額: ¥${subscTotal.toLocaleString()}` : `Total: ¥${subscTotal.toLocaleString()}/mo`}
-                </span>
-              </div>
-
-              <div className="flex-1 flex flex-col space-y-2 mb-3">
-                {activeSubscs.map((sub, idx) => (
-                  <div 
-                    key={idx}
-                    onClick={() => toggleSubsc(idx)}
-                    className={`p-2.5 rounded-lg border transition-all cursor-pointer flex items-center justify-between ${
-                      sub.active 
-                        ? 'bg-purple-500/5 border-purple-500/20 text-white' 
-                        : 'bg-white/[0.01] border-white/5 text-gray-text/50'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <CheckCircle2 className={`w-4 h-4 ${sub.active ? 'text-purple-400' : 'text-gray-600'}`} />
-                      <span className="text-xs font-semibold">{sub.name}</span>
-                    </div>
-                    <span className="text-xs font-mono font-bold">¥{sub.cost.toLocaleString()}</span>
+            {/* Interactive Browser Screenshots Gallery (Matching Touchaku app screenshot UI logic) */}
+            <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col gap-4 min-h-[300px]">
+              {/* Browser Bezel mockup */}
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 bg-black shadow-lg">
+                {/* Window header */}
+                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                  <div className="flex-1 bg-white/[0.02] h-3.5 rounded text-[8px] text-white/30 flex items-center justify-center font-mono select-none">
+                    azure-chat.ai
                   </div>
-                ))}
+                </div>
+                <div className="relative w-full h-[calc(100%-24px)] bg-zinc-950">
+                  <Image
+                    src={azureScreenshots[activeAzureScreenIdx].src}
+                    alt={azureScreenshots[activeAzureScreenIdx].jpName}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
               </div>
-
-              <div className="p-2 rounded bg-purple-500/10 border border-purple-500/20 text-[10px] text-purple-300 font-light flex items-center space-x-2">
-                <Calendar className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-                <span>
-                  {language === 'jp'
-                    ? '次回の引き落とし予定日: 2026年7月1日'
-                    : 'Next billing scheduled on July 1, 2026'}
-                </span>
+              
+              {/* Navigation options */}
+              <div className="flex flex-col space-y-1.5 w-full font-mono text-[11px]">
+                <span className="text-[10px] font-bold text-purple-400 font-mono tracking-wider mb-1">SCREENSHOTS</span>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {azureScreenshots.map((screen, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveAzureScreenIdx(idx)}
+                      className={`px-3 py-1.5 rounded-lg text-xs text-left transition-all cursor-pointer truncate ${
+                        activeAzureScreenIdx === idx
+                          ? 'bg-purple-500/10 border-purple-500/30 text-purple-400 font-semibold border'
+                          : 'bg-white/[0.01] border-transparent text-gray-text hover:text-white border'
+                      }`}
+                    >
+                      {language === 'jp' ? screen.jpName : screen.enName}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
