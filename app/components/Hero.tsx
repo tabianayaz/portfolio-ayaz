@@ -6,6 +6,7 @@ import { dictionary } from '../locales/dictionary';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { GithubIcon as Github } from './BrandIcons';
+import Hero3DObject from './Hero3DObject';
 
 export default function Hero() {
   const { language } = useApp();
@@ -68,6 +69,7 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden py-20 select-none"
     >
+      <Hero3DObject />
       <motion.div
         className="fixed w-[300px] h-[300px] rounded-full bg-gradient-to-r from-primary/15 to-secondary/15 blur-[80px] pointer-events-none -z-10"
         style={{

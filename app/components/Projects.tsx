@@ -5,10 +5,11 @@ import Image from 'next/image';
 import { useApp } from '../context/AppContext';
 import { dictionary } from '../locales/dictionary';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Play, RotateCcw, Smartphone, Bell, CheckCircle2, 
+import {
+  Play, RotateCcw, Smartphone, Bell, CheckCircle2,
   Search, Cpu, Sparkles, TrendingUp, Calendar
 } from 'lucide-react';
+import TiltCard from './TiltCard';
 
 export default function Projects() {
   const { language } = useApp();
@@ -85,7 +86,7 @@ export default function Projects() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           
           {/* Card 1: Dragon Blaze RPG */}
-          <motion.div
+          <TiltCard
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -121,10 +122,10 @@ export default function Projects() {
                 className="w-full h-full object-contain"
               />
             </div>
-          </motion.div>
+          </TiltCard>
 
           {/* Card 2: Touchaku Wake Mobile App */}
-          <motion.div
+          <TiltCard
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -181,10 +182,10 @@ export default function Projects() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </TiltCard>
 
           {/* Card 3: AI Mandarin Classifier */}
-          <motion.div
+          <TiltCard
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -265,10 +266,10 @@ export default function Projects() {
                 </button>
               </div>
             </div>
-          </motion.div>
+          </TiltCard>
 
           {/* Card 4: Azure AI Chat Web App */}
-          <motion.div
+          <TiltCard
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -338,7 +339,7 @@ export default function Projects() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </TiltCard>
 
         </div>
       </div>
