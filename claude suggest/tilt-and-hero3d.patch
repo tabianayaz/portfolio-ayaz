@@ -1,0 +1,390 @@
+diff --git a/app/components/Hero.tsx b/app/components/Hero.tsx
+index 2caf3ad..d803b25 100644
+--- a/app/components/Hero.tsx
++++ b/app/components/Hero.tsx
+@@ -6,6 +6,7 @@ import { dictionary } from '../locales/dictionary';
+ import { motion, useMotionValue, useSpring } from 'motion/react';
+ import { ArrowRight } from 'lucide-react';
+ import { GithubIcon as Github } from './BrandIcons';
++import Hero3DObject from './Hero3DObject';
+ 
+ export default function Hero() {
+   const { language } = useApp();
+@@ -68,6 +69,7 @@ export default function Hero() {
+       id="home"
+       className="relative min-h-screen w-full flex flex-col justify-center items-center px-6 text-center overflow-hidden py-20 select-none"
+     >
++      <Hero3DObject />
+       <motion.div
+         className="fixed w-[300px] h-[300px] rounded-full bg-gradient-to-r from-primary/15 to-secondary/15 blur-[80px] pointer-events-none -z-10"
+         style={{
+diff --git a/app/components/Hero3DObject.tsx b/app/components/Hero3DObject.tsx
+new file mode 100644
+index 0000000..156c3d5
+--- /dev/null
++++ b/app/components/Hero3DObject.tsx
+@@ -0,0 +1,141 @@
++'use client';
++
++import React, { useEffect, useRef } from 'react';
++import * as THREE from 'three';
++
++/**
++ * A single, focused 3D centerpiece for the hero section — distinct from
++ * ThreeBackground's ambient particle field. Renders a glass-like
++ * icosahedron with a wireframe shell, lit with two colored point lights
++ * matching the site's primary/secondary palette, rotating gently and
++ * tilting toward the cursor.
++ *
++ * Skipped on small screens and when prefers-reduced-motion is set, to
++ * keep the hero light on mobile and respect motion preferences.
++ */
++export default function Hero3DObject() {
++  const containerRef = useRef<HTMLDivElement>(null);
++
++  useEffect(() => {
++    const container = containerRef.current;
++    if (!container) return;
++
++    const prefersReducedMotion = window.matchMedia(
++      '(prefers-reduced-motion: reduce)'
++    ).matches;
++    const isSmallScreen = window.innerWidth < 768;
++    if (isSmallScreen) return; // keep mobile hero lightweight, no WebGL cost
++
++    const scene = new THREE.Scene();
++    const camera = new THREE.PerspectiveCamera(
++      45,
++      container.clientWidth / container.clientHeight,
++      0.1,
++      100
++    );
++    camera.position.set(0, 0, 7);
++
++    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
++    renderer.setSize(container.clientWidth, container.clientHeight);
++    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
++    container.appendChild(renderer.domElement);
++
++    // Glass-like core
++    const coreGeometry = new THREE.IcosahedronGeometry(2.1, 1);
++    const coreMaterial = new THREE.MeshPhysicalMaterial({
++      color: new THREE.Color('#8B5CF6'),
++      metalness: 0.1,
++      roughness: 0.15,
++      transmission: 0.9,
++      thickness: 1.2,
++      transparent: true,
++      opacity: 0.32,
++      clearcoat: 1,
++      clearcoatRoughness: 0.1,
++    });
++    const core = new THREE.Mesh(coreGeometry, coreMaterial);
++    scene.add(core);
++
++    // Wireframe shell for structural definition
++    const wireGeometry = new THREE.IcosahedronGeometry(2.16, 1);
++    const wireMaterial = new THREE.MeshBasicMaterial({
++      color: new THREE.Color('#3B82F6'),
++      wireframe: true,
++      transparent: true,
++      opacity: 0.22,
++    });
++    const wire = new THREE.Mesh(wireGeometry, wireMaterial);
++    scene.add(wire);
++
++    // Lighting matching the site's primary/secondary palette
++    const keyLight = new THREE.PointLight('#8B5CF6', 14, 20);
++    keyLight.position.set(4, 3, 5);
++    scene.add(keyLight);
++
++    const rimLight = new THREE.PointLight('#3B82F6', 9, 20);
++    rimLight.position.set(-4, -2, -4);
++    scene.add(rimLight);
++
++    scene.add(new THREE.AmbientLight('#ffffff', 0.15));
++
++    let targetX = 0;
++    let targetY = 0;
++    let mouseX = 0;
++    let mouseY = 0;
++
++    const handleMouseMove = (e: MouseEvent) => {
++      targetX = (e.clientX / window.innerWidth - 0.5) * 0.6;
++      targetY = (e.clientY / window.innerHeight - 0.5) * 0.6;
++    };
++    if (!prefersReducedMotion) {
++      window.addEventListener('mousemove', handleMouseMove);
++    }
++
++    const handleResize = () => {
++      if (!container) return;
++      camera.aspect = container.clientWidth / container.clientHeight;
++      camera.updateProjectionMatrix();
++      renderer.setSize(container.clientWidth, container.clientHeight);
++    };
++    window.addEventListener('resize', handleResize);
++
++    let frameId: number;
++    const animate = () => {
++      frameId = requestAnimationFrame(animate);
++
++      if (!prefersReducedMotion) {
++        mouseX += (targetX - mouseX) * 0.04;
++        mouseY += (targetY - mouseY) * 0.04;
++        core.rotation.y += 0.0025;
++      }
++
++      core.rotation.x = mouseY * 0.5;
++      core.rotation.y += prefersReducedMotion ? 0 : mouseX * 0.002;
++      wire.rotation.x = core.rotation.x;
++      wire.rotation.y = core.rotation.y;
++
++      renderer.render(scene, camera);
++    };
++    animate();
++
++    return () => {
++      cancelAnimationFrame(frameId);
++      window.removeEventListener('mousemove', handleMouseMove);
++      window.removeEventListener('resize', handleResize);
++      renderer.dispose();
++      coreGeometry.dispose();
++      wireGeometry.dispose();
++      coreMaterial.dispose();
++      wireMaterial.dispose();
++      if (container) container.innerHTML = '';
++    };
++  }, []);
++
++  return (
++    <div
++      ref={containerRef}
++      className="absolute inset-0 -z-2 pointer-events-none hidden md:block"
++      aria-hidden="true"
++    />
++  );
++}
+diff --git a/app/components/Projects.tsx b/app/components/Projects.tsx
+index 4686a4a..b9671b3 100644
+--- a/app/components/Projects.tsx
++++ b/app/components/Projects.tsx
+@@ -5,10 +5,11 @@ import Image from 'next/image';
+ import { useApp } from '../context/AppContext';
+ import { dictionary } from '../locales/dictionary';
+ import { motion, AnimatePresence } from 'motion/react';
+-import { 
+-  Play, RotateCcw, Smartphone, Bell, CheckCircle2, 
++import {
++  Play, RotateCcw, Smartphone, Bell, CheckCircle2,
+   Search, Cpu, Sparkles, TrendingUp, Calendar
+ } from 'lucide-react';
++import TiltCard from './TiltCard';
+ 
+ export default function Projects() {
+   const { language } = useApp();
+@@ -85,7 +86,7 @@ export default function Projects() {
+         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+           
+           {/* Card 1: Dragon Blaze RPG */}
+-          <motion.div
++          <TiltCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -121,10 +122,10 @@ export default function Projects() {
+                 className="w-full h-full object-contain"
+               />
+             </div>
+-          </motion.div>
++          </TiltCard>
+ 
+           {/* Card 2: Touchaku Wake Mobile App */}
+-          <motion.div
++          <TiltCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -181,10 +182,10 @@ export default function Projects() {
+                 ))}
+               </div>
+             </div>
+-          </motion.div>
++          </TiltCard>
+ 
+           {/* Card 3: AI Mandarin Classifier */}
+-          <motion.div
++          <TiltCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -265,10 +266,10 @@ export default function Projects() {
+                 </button>
+               </div>
+             </div>
+-          </motion.div>
++          </TiltCard>
+ 
+           {/* Card 4: Azure AI Chat Web App */}
+-          <motion.div
++          <TiltCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -338,7 +339,7 @@ export default function Projects() {
+                 </div>
+               </div>
+             </div>
+-          </motion.div>
++          </TiltCard>
+ 
+         </div>
+       </div>
+diff --git a/app/components/TiltCard.tsx b/app/components/TiltCard.tsx
+new file mode 100644
+index 0000000..d05bc70
+--- /dev/null
++++ b/app/components/TiltCard.tsx
+@@ -0,0 +1,99 @@
++'use client';
++
++import React, { useRef, useSyncExternalStore } from 'react';
++import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
++
++const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
++
++function subscribeToReducedMotion(callback: () => void) {
++  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
++  mq.addEventListener('change', callback);
++  return () => mq.removeEventListener('change', callback);
++}
++
++function getReducedMotionSnapshot() {
++  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
++}
++
++function getReducedMotionServerSnapshot() {
++  return false;
++}
++
++type TiltCardProps = React.ComponentProps<typeof motion.div> & {
++  /** Max rotation in degrees on either axis. Default 8. */
++  tiltStrength?: number;
++};
++
++/**
++ * Wraps a glass-panel card with a cursor-driven 3D tilt + a soft
++ * radial highlight that follows the pointer. Falls back to a flat,
++ * static card when the user has prefers-reduced-motion enabled.
++ *
++ * Usage: replace `<motion.div className="glass-panel ...">` with
++ * `<TiltCard className="glass-panel ...">` and keep all the same
++ * initial / whileInView / transition props — they pass straight through.
++ */
++export default function TiltCard({
++  children,
++  className = '',
++  style,
++  tiltStrength = 8,
++  ...motionProps
++}: TiltCardProps) {
++  const ref = useRef<HTMLDivElement>(null);
++  const reduceMotion = useSyncExternalStore(
++    subscribeToReducedMotion,
++    getReducedMotionSnapshot,
++    getReducedMotionServerSnapshot
++  );
++
++  // Normalized pointer position: -0.5 (left/top) to 0.5 (right/bottom)
++  const px = useMotionValue(0);
++  const py = useMotionValue(0);
++
++  const springConfig = { damping: 20, stiffness: 220, mass: 0.4 };
++  const rotateX = useSpring(
++    useTransform(py, [-0.5, 0.5], [tiltStrength, -tiltStrength]),
++    springConfig
++  );
++  const rotateY = useSpring(
++    useTransform(px, [-0.5, 0.5], [-tiltStrength, tiltStrength]),
++    springConfig
++  );
++
++  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
++    if (reduceMotion) return;
++    const el = ref.current;
++    if (!el) return;
++    const rect = el.getBoundingClientRect();
++    const nx = (e.clientX - rect.left) / rect.width;
++    const ny = (e.clientY - rect.top) / rect.height;
++    px.set(nx - 0.5);
++    py.set(ny - 0.5);
++    el.style.setProperty('--mx', `${nx * 100}%`);
++    el.style.setProperty('--my', `${ny * 100}%`);
++  };
++
++  const handleMouseLeave = () => {
++    px.set(0);
++    py.set(0);
++  };
++
++  return (
++    <motion.div
++      ref={ref}
++      onMouseMove={handleMouseMove}
++      onMouseLeave={handleMouseLeave}
++      style={{
++        rotateX: reduceMotion ? 0 : rotateX,
++        rotateY: reduceMotion ? 0 : rotateY,
++        transformPerspective: 1000,
++        ...style,
++      }}
++      className={`tilt-card ${className}`}
++      {...motionProps}
++    >
++      {children}
++    </motion.div>
++  );
++}
+diff --git a/app/globals.css b/app/globals.css
+index 0ea12c0..431d54f 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -70,6 +70,38 @@ body {
+   box-shadow: 0 12px 40px 0 rgba(139, 92, 246, 0.08);
+ }
+ 
++/* Cursor-tracking tilt + highlight, layered on top of glass-panel */
++.tilt-card {
++  position: relative;
++  transform-style: preserve-3d;
++  will-change: transform;
++}
++
++.tilt-card::before {
++  content: "";
++  position: absolute;
++  inset: 0;
++  border-radius: inherit;
++  background: radial-gradient(
++    circle at var(--mx, 50%) var(--my, 50%),
++    rgba(139, 92, 246, 0.16),
++    transparent 60%
++  );
++  opacity: 0;
++  transition: opacity 0.3s ease;
++  pointer-events: none;
++}
++
++.tilt-card:hover::before {
++  opacity: 1;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .tilt-card {
++    transform: none !important;
++  }
++}
++
+ /* Aurora background */
+ .aurora-bg {
+   position: relative;

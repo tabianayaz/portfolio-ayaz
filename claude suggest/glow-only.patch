@@ -1,0 +1,159 @@
+diff --git a/app/components/GlowCard.tsx b/app/components/GlowCard.tsx
+new file mode 100644
+index 0000000..5215bcc
+--- /dev/null
++++ b/app/components/GlowCard.tsx
+@@ -0,0 +1,43 @@
++'use client';
++
++import React, { useRef } from 'react';
++import { motion } from 'motion/react';
++
++type GlowCardProps = React.ComponentProps<typeof motion.div>;
++
++/**
++ * Wraps a glass-panel card with a soft radial highlight that follows
++ * the cursor — pure CSS glow via custom properties, no 3D rotation.
++ *
++ * Usage: replace `<motion.div className="glass-panel ...">` with
++ * `<GlowCard className="glass-panel ...">` and keep all the same
++ * initial / whileInView / transition props — they pass straight through.
++ */
++export default function GlowCard({
++  children,
++  className = '',
++  ...motionProps
++}: GlowCardProps) {
++  const ref = useRef<HTMLDivElement>(null);
++
++  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
++    const el = ref.current;
++    if (!el) return;
++    const rect = el.getBoundingClientRect();
++    const nx = ((e.clientX - rect.left) / rect.width) * 100;
++    const ny = ((e.clientY - rect.top) / rect.height) * 100;
++    el.style.setProperty('--mx', `${nx}%`);
++    el.style.setProperty('--my', `${ny}%`);
++  };
++
++  return (
++    <motion.div
++      ref={ref}
++      onMouseMove={handleMouseMove}
++      className={`glow-card ${className}`}
++      {...motionProps}
++    >
++      {children}
++    </motion.div>
++  );
++}
+diff --git a/app/components/Projects.tsx b/app/components/Projects.tsx
+index 4686a4a..72a4511 100644
+--- a/app/components/Projects.tsx
++++ b/app/components/Projects.tsx
+@@ -5,10 +5,11 @@ import Image from 'next/image';
+ import { useApp } from '../context/AppContext';
+ import { dictionary } from '../locales/dictionary';
+ import { motion, AnimatePresence } from 'motion/react';
+-import { 
+-  Play, RotateCcw, Smartphone, Bell, CheckCircle2, 
++import {
++  Play, RotateCcw, Smartphone, Bell, CheckCircle2,
+   Search, Cpu, Sparkles, TrendingUp, Calendar
+ } from 'lucide-react';
++import GlowCard from './GlowCard';
+ 
+ export default function Projects() {
+   const { language } = useApp();
+@@ -85,7 +86,7 @@ export default function Projects() {
+         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+           
+           {/* Card 1: Dragon Blaze RPG */}
+-          <motion.div
++          <GlowCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -121,10 +122,10 @@ export default function Projects() {
+                 className="w-full h-full object-contain"
+               />
+             </div>
+-          </motion.div>
++          </GlowCard>
+ 
+           {/* Card 2: Touchaku Wake Mobile App */}
+-          <motion.div
++          <GlowCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -181,10 +182,10 @@ export default function Projects() {
+                 ))}
+               </div>
+             </div>
+-          </motion.div>
++          </GlowCard>
+ 
+           {/* Card 3: AI Mandarin Classifier */}
+-          <motion.div
++          <GlowCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -265,10 +266,10 @@ export default function Projects() {
+                 </button>
+               </div>
+             </div>
+-          </motion.div>
++          </GlowCard>
+ 
+           {/* Card 4: Azure AI Chat Web App */}
+-          <motion.div
++          <GlowCard
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+@@ -338,7 +339,7 @@ export default function Projects() {
+                 </div>
+               </div>
+             </div>
+-          </motion.div>
++          </GlowCard>
+ 
+         </div>
+       </div>
+diff --git a/app/globals.css b/app/globals.css
+index 0ea12c0..713d140 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -70,6 +70,30 @@ body {
+   box-shadow: 0 12px 40px 0 rgba(139, 92, 246, 0.08);
+ }
+ 
++/* Cursor-tracking glass highlight, layered on top of glass-panel */
++.glow-card {
++  position: relative;
++}
++
++.glow-card::before {
++  content: "";
++  position: absolute;
++  inset: 0;
++  border-radius: inherit;
++  background: radial-gradient(
++    circle at var(--mx, 50%) var(--my, 50%),
++    rgba(139, 92, 246, 0.16),
++    transparent 60%
++  );
++  opacity: 0;
++  transition: opacity 0.3s ease;
++  pointer-events: none;
++}
++
++.glow-card:hover::before {
++  opacity: 1;
++}
++
+ /* Aurora background */
+ .aurora-bg {
+   position: relative;
