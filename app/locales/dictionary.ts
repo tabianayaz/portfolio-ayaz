@@ -73,6 +73,12 @@ export const dictionary = {
           category: 'Web App',
           description: 'Azure OpenAI Serviceを活用した安全で高機能なAIチャットウェブアプリケーション。ユーザーアカウント管理、メッセージ履歴保存、詳細なチャット設定機能を搭載。',
           tags: ['React', 'Next.js', 'TypeScript', 'Azure OpenAI']
+        },
+        fitAi: {
+          title: 'FitAI Trainer',
+          category: 'Desktop App',
+          description: 'PySide6 (Qt for Python)、OpenCV、MediaPipe Poseを組み合わせたAIフィットネストレーナー。カメラ映像からリアルタイムで骨格（ポーズ）を推定し、スクワットなどの姿勢の正確性を解析・カウントします。ユーザー管理、ワークアウト履歴や目標設定はFirebase (Auth / Firestore)と連携しています。',
+          tags: ['Python', 'PySide6', 'OpenCV', 'MediaPipe', 'Firebase']
         }
       }
     },
@@ -208,6 +214,12 @@ export const dictionary = {
           category: 'Web App',
           description: 'An AI conversational web application powered by Azure OpenAI Service, featuring user account authentication, chat session history persistence, and custom model parameter adjustments.',
           tags: ['React', 'Next.js', 'TypeScript', 'Azure OpenAI']
+        },
+        fitAi: {
+          title: 'FitAI Trainer',
+          category: 'Desktop App',
+          description: 'A desktop AI fitness coach built with PySide6 (Qt for Python), OpenCV, and MediaPipe Pose. It tracks user posture in real-time, counts workout repetitions (e.g. squats), and judges pose accuracy. Integrates Firebase (Auth & Firestore) for secure user sessions, workout history tracking, and settings configuration.',
+          tags: ['Python', 'PySide6', 'OpenCV', 'MediaPipe', 'Firebase']
         }
       }
     },

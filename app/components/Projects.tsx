@@ -51,6 +51,17 @@ export default function Projects() {
     { src: '/azure setting ss.png', jpName: 'パラメータ設定', enName: 'Model Settings' }
   ];
 
+  // 4. FitAI Trainer State
+  const [activeFitAiScreenIdx, setActiveFitAiScreenIdx] = useState(0);
+  const fitAiScreenshots = [
+    { src: '/login ui fitAi.png', jpName: 'ログイン画面', enName: 'Login Screen' },
+    { src: '/dashboaedfitAi.png', jpName: 'ダッシュボード', enName: 'Dashboard Stats' },
+    { src: '/exercisefitAI.png', jpName: 'ポーズ姿勢解析', enName: 'AI Posture Tracker' },
+    { src: '/historyfitAI.png', jpName: 'トレーニング履歴', enName: 'Workout History' },
+    { src: '/profilefitAi.png', jpName: 'ユーザープロファイル', enName: 'Profile Settings' },
+    { src: '/settingfitAi.png', jpName: '詳細システム設定', enName: 'System Configurations' }
+  ];
+
   return (
     <section id="projects" className="relative py-24 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -336,6 +347,83 @@ export default function Projects() {
                       {language === 'jp' ? screen.jpName : screen.enName}
                     </button>
                   ))}
+                </div>
+              </div>
+            </div>
+          </TiltCard>
+
+          {/* Card 5: FitAI Trainer */}
+          <TiltCard
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="glass-panel p-8 border border-card-border/60 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center lg:col-span-2 mt-4"
+          >
+            {/* Left Content (Explanation & Controls) */}
+            <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-6">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-pink-400">
+                  {items.fitAi.category}
+                </span>
+                <h3 className="text-3xl font-bold text-foreground mt-1 mb-4">
+                  {items.fitAi.title}
+                </h3>
+                <p className="text-base text-gray-text font-light leading-relaxed select-text">
+                  {items.fitAi.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {items.fitAi.tags.map((tag, idx) => (
+                    <span key={idx} className="px-2.5 py-0.5 text-[11px] rounded bg-pink-500/10 text-pink-400 border border-pink-500/20">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Navigation options */}
+              <div className="flex flex-col space-y-2 font-mono text-[11px]">
+                <span className="text-[10px] font-bold text-pink-400 font-mono tracking-wider mb-1">SCREENSHOTS</span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {fitAiScreenshots.map((screen, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveFitAiScreenIdx(idx)}
+                      className={`px-3 py-2 rounded-lg text-xs text-left transition-all cursor-pointer truncate ${
+                        activeFitAiScreenIdx === idx
+                          ? 'bg-pink-500/10 border-pink-500/30 text-pink-400 font-semibold border'
+                          : 'bg-white/[0.01] border-transparent text-gray-text hover:text-white border'
+                      }`}
+                    >
+                      {language === 'jp' ? screen.jpName : screen.enName}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Content (Mockup Desktop Window) */}
+            <div className="lg:col-span-5 flex justify-center items-center bg-black/40 rounded-xl border border-white/5 p-4 h-full min-h-[350px]">
+              {/* Browser Bezel mockup */}
+              <div className="relative aspect-[1272/826] w-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl transition-transform duration-300 hover:scale-105">
+                {/* Window header */}
+                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                  <div className="flex-1 bg-white/[0.02] h-3.5 rounded text-[8px] text-white/30 flex items-center justify-center font-mono select-none">
+                    fit-ai-trainer
+                  </div>
+                </div>
+                <div className="relative w-full h-[calc(100%-24px)] bg-zinc-950">
+                  <Image
+                    src={fitAiScreenshots[activeFitAiScreenIdx].src}
+                    alt={fitAiScreenshots[activeFitAiScreenIdx].jpName}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
+                  />
                 </div>
               </div>
             </div>
