@@ -80,7 +80,7 @@ export default function Contact() {
                   <span className="text-xs font-semibold text-gray-text w-24">
                     {language === 'jp' ? '個人用:' : 'Personal:'}
                   </span>
-                  <div className="inline-flex items-center space-x-2 bg-white/[0.02] border border-white/5 rounded-lg px-4 py-2 font-mono text-xs select-text max-w-fit">
+                  <div className="contact-email-container inline-flex items-center space-x-2 bg-white/[0.02] border border-white/5 rounded-lg px-4 py-2 font-mono text-xs select-text max-w-fit">
                     <span className="text-gray-text select-text">{personalEmail}</span>
                     <button
                       onClick={copyPersonal}
@@ -109,7 +109,7 @@ export default function Contact() {
                   <span className="text-xs font-semibold text-gray-text w-24">
                     {language === 'jp' ? '大学用:' : 'University:'}
                   </span>
-                  <div className="inline-flex items-center space-x-2 bg-white/[0.02] border border-white/5 rounded-lg px-4 py-2 font-mono text-xs select-text max-w-fit">
+                  <div className="contact-email-container inline-flex items-center space-x-2 bg-white/[0.02] border border-white/5 rounded-lg px-4 py-2 font-mono text-xs select-text max-w-fit">
                     <span className="text-gray-text select-text">{universityEmail}</span>
                     <button
                       onClick={copyUniversity}
@@ -142,7 +142,7 @@ export default function Contact() {
                 href="https://github.com/tabianayaz"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
+                className="primary-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold cursor-pointer"
               >
                 <Github className="w-4 h-4 text-white" />
                 <span>{t.github}</span>
@@ -153,7 +153,7 @@ export default function Contact() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
+                className="primary-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold cursor-pointer"
               >
                 <Linkedin className="w-4 h-4 text-white" />
                 <span>{t.linkedin}</span>
@@ -164,7 +164,7 @@ export default function Contact() {
                 href="https://forms.gle/MsnTkj5ovFbfjGEi7"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="animated-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold text-white bg-black/40 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer"
+                className="primary-btn flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-semibold cursor-pointer"
               >
                 <FileDown className="w-4 h-4 text-white animate-pulse" />
                 <span>{t.resume}</span>

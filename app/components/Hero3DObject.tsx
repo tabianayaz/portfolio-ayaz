@@ -78,6 +78,36 @@ export default function Hero3DObject() {
 
     scene.add(new THREE.AmbientLight('#ffffff', 0.15));
 
+    // Theme Switch Observer to adjust lighting & core opacity in Light Mode
+    const handleThemeChange = () => {
+      const isLight = document.documentElement.classList.contains('light');
+      if (isLight) {
+        keyLight.intensity = 20;
+        rimLight.intensity = 15;
+        coreMaterial.opacity = 0.45;
+        coreMaterial.color.set('#7C3AED');
+        wireMaterial.opacity = 0.35;
+        wireMaterial.color.set('#2563EB');
+      } else {
+        keyLight.intensity = 14;
+        rimLight.intensity = 9;
+        coreMaterial.opacity = 0.32;
+        coreMaterial.color.set('#8B5CF6');
+        wireMaterial.opacity = 0.22;
+        wireMaterial.color.set('#3B82F6');
+      }
+      coreMaterial.needsUpdate = true;
+      wireMaterial.needsUpdate = true;
+    };
+
+    handleThemeChange();
+
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
     let targetX = 0;
     let targetY = 0;
     let mouseX = 0;
@@ -122,6 +152,7 @@ export default function Hero3DObject() {
       cancelAnimationFrame(frameId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
+      observer.disconnect();
       renderer.dispose();
       coreGeometry.dispose();
       wireGeometry.dispose();

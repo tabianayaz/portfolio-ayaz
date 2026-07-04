@@ -82,7 +82,7 @@ export default function Navbar() {
             <motion.div
               layoutId="ta-brand-logo"
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.15)]"
+              className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.15)] ta-logo-glow"
             >
               <Image
                 src="/logo.jpg"

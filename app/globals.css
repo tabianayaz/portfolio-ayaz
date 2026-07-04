@@ -6,18 +6,20 @@
   --primary: #8B5CF6;
   --secondary: #3B82F6;
   --gray-text: #A1A1AA;
+  --muted-text: #71717A;
   --card-bg: rgba(255, 255, 255, 0.05);
   --card-border: rgba(255, 255, 255, 0.08);
 }
 
 :root.light {
-  --background: #FAFAFA;
-  --foreground: #09090B;
+  --background: #FFFFFF;
+  --foreground: #111827;
   --primary: #7C3AED;
   --secondary: #2563EB;
-  --gray-text: #52525B;
-  --card-bg: rgba(0, 0, 0, 0.03);
-  --card-border: rgba(0, 0, 0, 0.08);
+  --gray-text: #64748B;
+  --muted-text: #94A3B8;
+  --card-bg: rgba(255, 255, 255, 0.65);
+  --card-border: rgba(255, 255, 255, 0.8);
 }
 
 @theme {
@@ -26,6 +28,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-gray-text: var(--gray-text);
+  --color-muted-text: var(--muted-text);
   --color-card-bg: var(--card-bg);
   --color-card-border: var(--card-border);
   
@@ -247,3 +250,169 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* ==========================================================================
+   PREMIUM BUTTON SYSTEM (Dark & Light)
+   ========================================================================== */
+
+.primary-btn {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(0, 0, 0, 0.4);
+  color: #FFFFFF;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+}
+
+.primary-btn::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 200%;
+  z-index: -1;
+  border-radius: 14px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  animation: gradient-move 3s infinite linear;
+}
+
+.primary-btn:hover::before {
+  opacity: 1;
+  filter: brightness(1.2);
+}
+
+.primary-btn:hover {
+  transform: scale(1.02);
+}
+
+.secondary-btn {
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.02);
+}
+
+/* Light Theme Button Overrides */
+:root.light .primary-btn {
+  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 8px 20px rgba(139, 92, 246, 0.3), 0px 6px 12px rgba(59, 130, 246, 0.2);
+}
+
+:root.light .primary-btn::before {
+  display: none;
+}
+
+:root.light .primary-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0px 16px 30px rgba(139, 92, 246, 0.4), 0px 10px 18px rgba(59, 130, 246, 0.3);
+}
+
+:root.light .secondary-btn {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #7C3AED;
+}
+
+:root.light .secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(139, 92, 246, 0.6);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0px 10px 20px rgba(99, 102, 241, 0.08);
+}
+
+/* ==========================================================================
+   LIGHT MODE DESIGN SYSTEM OVERRIDES
+   ========================================================================== */
+
+/* Background gradient & Aurora */
+.light .aurora-bg {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFF 50%, #EEF2FF 100%) !important;
+}
+
+.light .aurora-bg::before,
+.light .aurora-bg::after {
+  opacity: 0.16 !important;
+  filter: blur(95px) !important;
+}
+
+/* Glass panel redesign */
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: 24px !important;
+  box-shadow: 0px 20px 60px rgba(99, 102, 241, 0.06) !important;
+}
+
+.light .glass-panel:hover {
+  transform: translateY(-8px) !important;
+  border-color: rgba(139, 92, 246, 0.45) !important;
+  box-shadow: 0px 30px 60px rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Image Zoom Effect inside Project Cards */
+.light .glass-panel img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.light .glass-panel:hover img {
+  transform: scale(1.04) !important;
+}
+
+/* Skill Cards tracking glow */
+.light .glow-card::after {
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(99, 102, 241, 0.15),
+    transparent 50%
+  ) !important;
+}
+
+/* TA Brand Logo Glow shadow */
+.light .ta-logo-glow {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Navbar glass floating style override */
+.light nav {
+  background-color: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.light nav.py-4 {
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.05) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Contact copiers */
+.light .contact-email-container {
+  background-color: rgba(139, 92, 246, 0.05) !important;
+  border-color: rgba(139, 92, 246, 0.12) !important;
+}
+
+.light .contact-email-container span {
+  color: #111827 !important;
+}
+

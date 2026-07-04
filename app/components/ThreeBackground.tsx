@@ -73,6 +73,29 @@ export default function ThreeBackground() {
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
+    // Theme Switch Observer to adjust particle colors/blending in Light Mode
+    const handleThemeChange = () => {
+      const isLight = document.documentElement.classList.contains('light');
+      if (isLight) {
+        material.blending = THREE.NormalBlending;
+        material.opacity = 0.65;
+        material.color.set('#8B5CF6');
+      } else {
+        material.blending = THREE.AdditiveBlending;
+        material.opacity = 1.0;
+        material.color.set('#ffffff');
+      }
+      material.needsUpdate = true;
+    };
+
+    handleThemeChange();
+
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
@@ -126,6 +149,7 @@ export default function ThreeBackground() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
+      observer.disconnect();
       renderer.dispose();
       if (containerRef.current) {
         containerRef.current.innerHTML = '';

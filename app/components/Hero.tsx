@@ -151,7 +151,7 @@ export default function Hero() {
         >
           <button
             onClick={scrollToProjects}
-            className="animated-btn w-full sm:w-auto px-8 py-3.5 text-sm font-semibold text-white bg-black/40 backdrop-blur-md rounded-xl shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-transform hover:scale-105"
+            className="primary-btn w-full sm:w-auto px-8 py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer"
           >
             {t.viewProjects}
             <ArrowRight className="w-4 h-4" />
@@ -161,7 +161,7 @@ export default function Hero() {
             href="https://github.com/tabianayaz"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto px-8 py-3.5 text-sm font-semibold text-white bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.08] rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-105"
+            className="secondary-btn w-full sm:w-auto px-8 py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer"
           >
             <Github className="w-4 h-4 text-gray-text" />
             {t.viewGithub}

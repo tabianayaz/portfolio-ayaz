@@ -157,7 +157,7 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
             {/* Glowing TA Logo (Framer Motion layoutId for smooth flight to navbar) */}
             <motion.div
               layoutId="ta-brand-logo"
-              className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(139,92,246,0.3)] shrink-0"
+              className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(139,92,246,0.3)] shrink-0 ta-logo-glow"
               initial={{ opacity: 0, scale: 0.7, filter: 'blur(20px)' }}
               animate={{ 
                 opacity: 1, 
