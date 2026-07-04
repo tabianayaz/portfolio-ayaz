@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useApp } from '../context/AppContext';
 import { dictionary } from '../locales/dictionary';
 import { Sun, Moon, Menu, X, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Navbar() {
-  const { language, setLanguage, theme, toggleTheme } = useApp();
+  const { language, setLanguage, theme, toggleTheme, isIntroActive } = useApp();
   const t = dictionary[language].nav;
   
   const [scrolled, setScrolled] = useState(false);
@@ -54,6 +55,8 @@ export default function Navbar() {
     }
   };
 
+  if (isIntroActive) return null;
+
   return (
     <>
       <div 
@@ -73,10 +76,26 @@ export default function Navbar() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="cursor-pointer font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+            className="flex items-center space-x-3 cursor-pointer select-none"
             onClick={() => scrollToSection('home')}
           >
-            {language === 'jp' ? 'アヤズ.T' : 'Ayaz.T'}
+            <motion.div
+              layoutId="ta-brand-logo"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.15)]"
+            >
+              <Image
+                src="/logo.jpg"
+                alt="TA Logo"
+                fill
+                sizes="32px"
+                className="object-cover"
+                priority
+              />
+            </motion.div>
+            <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              {language === 'jp' ? 'アヤズ.T' : 'Ayaz.T'}
+            </span>
           </motion.div>
 
           <div className="hidden md:flex items-center space-x-8">

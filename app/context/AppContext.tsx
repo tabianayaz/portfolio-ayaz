@@ -10,6 +10,8 @@ interface AppContextType {
   setLanguage: (lang: Language) => void;
   theme: Theme;
   toggleTheme: () => void;
+  isIntroActive: boolean;
+  setIsIntroActive: (active: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -17,6 +19,12 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('jp');
   const [theme, setTheme] = useState<Theme>('dark');
+  const [isIntroActive, setIsIntroActive] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return !localStorage.getItem('portfolio-visited');
+    }
+    return true;
+  });
 
   useEffect(() => {
     const savedLang = localStorage.getItem('portfolio-lang') as Language;
@@ -54,7 +62,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AppContext.Provider value={{ language, setLanguage: changeLanguage, theme, toggleTheme }}>
+    <AppContext.Provider 
+      value={{ 
+        language, 
+        setLanguage: changeLanguage, 
+        theme, 
+        toggleTheme, 
+        isIntroActive, 
+        setIsIntroActive 
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
