@@ -19,14 +19,15 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('jp');
   const [theme, setTheme] = useState<Theme>('dark');
-  const [isIntroActive, setIsIntroActive] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return !localStorage.getItem('portfolio-visited');
-    }
-    return true;
-  });
+  const [isIntroActive, setIsIntroActive] = useState<boolean>(true);
 
   useEffect(() => {
+    // Check if the user has already visited the site
+    const visited = localStorage.getItem('portfolio-visited');
+    if (visited) {
+      setIsIntroActive(false);
+    }
+
     const savedLang = localStorage.getItem('portfolio-lang') as Language;
     if (savedLang) {
       setLanguage(savedLang);

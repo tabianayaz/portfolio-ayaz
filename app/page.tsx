@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { useApp } from './context/AppContext';
 import { AnimatePresence } from 'motion/react';
 import Navbar from './components/Navbar';
@@ -13,6 +14,15 @@ import IntroLoader from './components/IntroLoader';
 
 export default function Home() {
   const { isIntroActive, setIsIntroActive } = useApp();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-[#09090B]" />;
+  }
 
   return (
     <>
