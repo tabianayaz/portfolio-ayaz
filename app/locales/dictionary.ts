@@ -100,9 +100,15 @@ export const dictionary = {
           status: '卒業'
         },
         {
+          school: '横浜システム工学院専門学校',
+          degree: 'IT・ゲームソフト科',
+          period: '2024 - 2026',
+          status: '卒業'
+        },
+        {
           school: '文教大学',
-          degree: '情報学部 情報システム学科',
-          period: '2024 - 2028',
+          degree: '情報学部 情報システム学科（3年次編入学）',
+          period: '2026 - 2028',
           status: '卒業見込み'
         }
       ]
@@ -244,9 +250,15 @@ export const dictionary = {
           status: 'Graduated'
         },
         {
+          school: 'Yokohama System Engineering College',
+          degree: 'Department of IT & Game Software',
+          period: '2024 - 2026',
+          status: 'Graduated'
+        },
+        {
           school: 'Bunkyo University',
-          degree: 'Faculty of Information and Communications, Department of Information Systems',
-          period: '2024 - 2028',
+          degree: 'Faculty of Information and Communications, Department of Information Systems (3rd Year Transfer)',
+          period: '2026 - 2028',
           status: 'Expected Graduation'
         }
       ]
