@@ -40,9 +40,11 @@ export const dictionary = {
       ]
     },
     skills: {
-      title: '技術スキル',
+      title: 'スキル',
       subtitle: 'SKILLS',
-      bentoDescription: 'モダンな技術スタックとクラウドインフラを組み合わせて、パフォーマンスと拡張性の高いシステムを構築しています。'
+      bentoDescription: '大学での学習や個人開発を通して習得した技術です。現在も新しい技術を学びながら、継続的にスキルアップしています。',
+      currentlyLearningTitle: '現在学習中',
+      currentlyLearningSubtitle: 'CURRENTLY LEARNING'
     },
     projects: {
       title: '制作実績',
@@ -183,7 +185,9 @@ export const dictionary = {
     skills: {
       title: 'Technical Skills',
       subtitle: 'SKILLS',
-      bentoDescription: 'Combining modern tech stacks and cloud infrastructures to build scalable, high-performance systems.'
+      bentoDescription: 'Technologies acquired through university coursework and personal development. Continuously upgrading my skill set while exploring new tools.',
+      currentlyLearningTitle: 'Currently Learning',
+      currentlyLearningSubtitle: 'CURRENTLY LEARNING'
     },
     projects: {
       title: 'Works',
