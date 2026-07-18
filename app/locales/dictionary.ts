@@ -64,11 +64,12 @@ export const dictionary = {
           description: 'Android向けに制作したモバイルアプリケーション。日常生活を便利にすることを目的として開発。',
           tags: ['Android', 'Java/Kotlin', 'SQLite', 'Mobile UX']
         },
-        mikanAI: {
-          title: 'AIみかん判定システム',
-          category: 'Computer Vision',
-          description: 'PythonとOpenCVを利用したAI画像認識システム。みかんが新鮮か腐っているかを高精度で判定するAI。',
-          tags: ['Python', 'OpenCV', 'AI', 'Image Processing']
+        jaNishiuwa: {
+          title: 'JAにしうわ 新規就農者受入資源情報管理システム',
+          category: 'Full-Stack GIS/IoT Web App',
+          description: '卒業制作 — JAにしうわ（西宇和農業協同組合）向けに構築した資源マッチングプラットフォーム。従来の手作業・関係性ベースのマッチング手法を脱却し、農地面積、作物適性、傾斜度、倉庫への近接性、および候補地に設置したESP32センサーで取得した土壌水分・日照量のIoTデータを活用して加重スコアリング。職員が新規就農者に最適な農地を効率的にマッチングできるように支援します。',
+          tags: ['Next.js', 'FastAPI', 'Supabase (PostGIS)', 'Firebase Auth', 'ESP32 / IoT', 'Vercel + Render'],
+          visitPage: 'サイトを訪問'
         },
         azureChat: {
           title: 'Azure AI Chat',
@@ -207,11 +208,12 @@ export const dictionary = {
           description: 'A mobile utility application designed for Android to enhance everyday productivity and simplify user routines.',
           tags: ['Android', 'Java/Kotlin', 'SQLite', 'Mobile UX']
         },
-        mikanAI: {
-          title: 'AI Mandarin Classifier',
-          category: 'Computer Vision',
-          description: 'Computer vision classification model utilizing Python and OpenCV to detect and judge the freshness of mandarins in real-time.',
-          tags: ['Python', 'OpenCV', 'AI', 'Image Processing']
+        jaNishiuwa: {
+          title: 'JA Nishiuwa New Farmer Resource Matching System',
+          category: 'Full-Stack GIS/IoT Web App',
+          description: 'Graduation Project — Full-Stack GIS/IoT Web Application built for JA Nishiuwa, an agricultural cooperative in Japan, to help staff match new farmers with suitable farmland. The system replaces a manual, relationship-based matching process with a data-driven tool that scores candidate farmland using land size, crop suitability, slope, warehouse proximity, and IoT-sensed soil moisture and light data — collected via ESP32 sensor units deployed only on shortlisted candidate plots.',
+          tags: ['Next.js', 'FastAPI', 'Supabase (PostGIS)', 'Firebase Auth', 'ESP32 / IoT', 'Vercel + Render'],
+          visitPage: 'Visit Live Site'
         },
         azureChat: {
           title: 'Azure AI Chat',

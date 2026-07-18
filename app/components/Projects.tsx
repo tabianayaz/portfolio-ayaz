@@ -8,7 +8,7 @@ import { motion } from 'motion/react';
 import {
   Play, Smartphone, Bell, CheckCircle2,
   Search, Cpu, Sparkles, TrendingUp, Calendar,
-  ZoomIn, Maximize2, Globe
+  ZoomIn, Maximize2, Globe, ExternalLink
 } from 'lucide-react';
 import TiltCard from './TiltCard';
 import ImageLightbox, { LightboxImage } from './ImageLightbox';
@@ -52,20 +52,15 @@ export default function Projects() {
   const currentTouchakuScreenshots = touchakuVersion === 'jp' ? touchakuJpScreenshots : touchakuEnScreenshots;
   const allTouchakuScreenshots = [...touchakuJpScreenshots, ...touchakuEnScreenshots];
 
-  // 2. AI Mikan Classifier State
-  const [mikanType, setMikanType] = useState<'fresh' | 'rotten'>('fresh');
-  const [isScanning, setIsScanning] = useState(false);
-  const [confidence, setConfidence] = useState(98.4);
-
-  const scanMikan = () => {
-    setIsScanning(true);
-    setTimeout(() => {
-      setIsScanning(false);
-      const nextType = mikanType === 'fresh' ? 'rotten' : 'fresh';
-      setMikanType(nextType);
-      setConfidence(nextType === 'fresh' ? 98.4 : 94.2);
-    }, 1200);
-  };
+  // 2. JA Nishiuwa System State
+  const jaNishiuwaScreenshots: LightboxImage[] = [
+    {
+      src: '/JAにしうわ向け.png',
+      jpName: 'ダッシュボード & 地図解析画面',
+      enName: 'Dashboard & GIS Farmland Mapping',
+      projectTitle: 'JAにしうわ システム'
+    }
+  ];
 
   // 3. Azure AI Chat State
   const [activeAzureScreenIdx, setActiveAzureScreenIdx] = useState(0);
@@ -299,7 +294,7 @@ export default function Projects() {
             </div>
           </TiltCard>
 
-          {/* Card 3: AI Mandarin Classifier */}
+          {/* Card 3: JA Nishiuwa System */}
           <TiltCard
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -309,16 +304,16 @@ export default function Projects() {
           >
             <div className="mb-6">
               <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-                {items.mikanAI.category}
+                {items.jaNishiuwa.category}
               </span>
               <h3 className="text-2xl font-bold text-foreground mt-1 mb-3">
-                {items.mikanAI.title}
+                {items.jaNishiuwa.title}
               </h3>
               <p className="text-sm text-gray-text font-light leading-relaxed select-text">
-                {items.mikanAI.description}
+                {items.jaNishiuwa.description}
               </p>
               <div className="flex flex-wrap gap-2 mt-4">
-                {items.mikanAI.tags.map((tag, idx) => (
+                {items.jaNishiuwa.tags.map((tag, idx) => (
                   <span key={idx} className="px-2.5 py-0.5 text-[11px] rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     {tag}
                   </span>
@@ -326,59 +321,49 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* Interactive Image Scan Widget */}
-            <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col justify-between min-h-[220px]">
-              <div className="relative aspect-video w-full rounded-lg bg-black/80 overflow-hidden flex items-center justify-center border border-white/5">
-                {isScanning && (
-                  <motion.div 
-                    initial={{ top: 0 }}
-                    animate={{ top: '100%' }}
-                    transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
-                    className="absolute left-0 right-0 h-0.5 bg-emerald-400/80 shadow-[0_0_10px_#10b981] z-10"
-                  />
-                )}
-
-                <div className={`w-24 h-24 rounded-full bg-gradient-to-br transition-all duration-500 relative flex items-center justify-center shadow-lg ${
-                  mikanType === 'fresh' 
-                    ? 'from-amber-400 to-orange-500' 
-                    : 'from-amber-900 to-emerald-950 border border-emerald-800'
-                }`}>
-                  <div className={`w-3 h-1.5 rounded-full absolute top-1 bg-green-600 transition-colors ${
-                    mikanType === 'fresh' ? 'bg-green-600' : 'bg-emerald-800'
-                  }`} />
-                  <span className="text-xs font-bold text-white/80 uppercase tracking-widest font-mono">
-                    {mikanType === 'fresh' ? 'Mikan' : 'Spoiled'}
-                  </span>
-                </div>
-
-                {!isScanning && (
-                  <div className={`absolute top-4 left-4 p-2 rounded bg-black/80 backdrop-blur-sm border text-[11px] font-mono flex items-center space-x-1.5 ${
-                    mikanType === 'fresh' ? 'border-emerald-500 text-emerald-400' : 'border-red-500 text-red-400'
-                  }`}>
-                    <Cpu className="w-3.5 h-3.5" />
-                    <span>
-                      {mikanType === 'fresh' 
-                        ? (language === 'jp' ? `新鮮 [${confidence}%]` : `Fresh [${confidence}%]`)
-                        : (language === 'jp' ? `腐敗 [${confidence}%]` : `Spoiled [${confidence}%]`)}
-                    </span>
+            {/* Interactive Browser Screenshots Gallery */}
+            <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col gap-4 min-h-[220px]">
+              {/* Browser Bezel mockup (Clickable for Lightbox) */}
+              <div
+                onClick={() => openLightbox(jaNishiuwaScreenshots, 0)}
+                className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 bg-black shadow-lg cursor-pointer group"
+                title={language === 'jp' ? 'クリックして拡大表示' : 'Click to enlarge'}
+              >
+                {/* Window header */}
+                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none z-10 relative">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                  <div className="flex-1 bg-white/[0.02] h-3.5 rounded text-[8px] text-white/30 flex items-center justify-center font-mono select-none">
+                    ja-nishiuwa-system.vercel.app
                   </div>
-                )}
+                </div>
+                <div className="relative w-full h-[calc(100%-24px)] bg-zinc-950">
+                  <Image
+                    src={jaNishiuwaScreenshots[0].src}
+                    alt={jaNishiuwaScreenshots[0].jpName}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center space-y-1 backdrop-blur-[2px]">
+                    <ZoomIn className="w-7 h-7 text-white drop-shadow" />
+                    <span className="text-xs font-bold text-white tracking-wider font-mono">クリックで拡大表示</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between mt-4">
-                <div className="flex flex-col">
-                  <span className="text-[10px] text-gray-text font-bold uppercase">{t.confidenceText}</span>
-                  <span className="text-lg font-bold text-white font-mono">{confidence}%</span>
-                </div>
-
-                <button
-                  onClick={scanMikan}
-                  disabled={isScanning}
-                  className="px-4 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 cursor-pointer disabled:opacity-50 transition-all text-xs font-semibold flex items-center space-x-1"
+              {/* Action Buttons: Visit Live Site */}
+              <div className="flex items-center justify-between pt-1">
+                <a
+                  href="https://ja-nishiuwa-system-omega.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold text-xs shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/35 transition-all cursor-pointer flex items-center justify-center space-x-2 border border-emerald-400/30 group"
                 >
-                  <Search className="w-3.5 h-3.5" />
-                  <span>{isScanning ? (language === 'jp' ? 'スキャン中...' : 'Scanning...') : (language === 'jp' ? '別の果物をスキャン' : 'Scan Alternate')}</span>
-                </button>
+                  <span>{items.jaNishiuwa.visitPage}</span>
+                  <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </a>
               </div>
             </div>
           </TiltCard>
