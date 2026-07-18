@@ -4,27 +4,53 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useApp } from '../context/AppContext';
 import { dictionary } from '../locales/dictionary';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import {
-  Play, RotateCcw, Smartphone, Bell, CheckCircle2,
-  Search, Cpu, Sparkles, TrendingUp, Calendar
+  Play, Smartphone, Bell, CheckCircle2,
+  Search, Cpu, Sparkles, TrendingUp, Calendar,
+  ZoomIn, Maximize2, Globe
 } from 'lucide-react';
 import TiltCard from './TiltCard';
+import ImageLightbox, { LightboxImage } from './ImageLightbox';
 
 export default function Projects() {
   const { language } = useApp();
   const t = dictionary[language].projects;
   const items = t.items;
 
-  // 1. Touchaku Wake Screenshots State
+  // Lightbox State
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImages, setLightboxImages] = useState<LightboxImage[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const openLightbox = (images: LightboxImage[], startIndex: number = 0) => {
+    setLightboxImages(images);
+    setLightboxIndex(startIndex);
+    setLightboxOpen(true);
+  };
+
+  // 1. Touchaku Wake Screenshots State (JP & EN versions)
+  const [touchakuVersion, setTouchakuVersion] = useState<'jp' | 'en'>('jp');
   const [activeScreenIdx, setActiveScreenIdx] = useState(0);
-  const touchakuScreenshots = [
-    { src: '/touchaku_home.png', jpName: 'ホーム画面', enName: 'Home Screen' },
-    { src: '/touchaku_route.png', jpName: 'ルート設定', enName: 'Route Setup' },
-    { src: '/touchaku_track.png', jpName: '位置追跡画面', enName: 'Tracking Screen' },
-    { src: '/touchaku_setting.png', jpName: '設定画面', enName: 'Settings Screen' },
-    { src: '/touchaku_app.png', jpName: '起動ロゴ画面', enName: 'Startup Logo' }
+
+  const touchakuJpScreenshots: LightboxImage[] = [
+    { src: '/JAVAR_touchaku_home.png', jpName: 'ホーム画面 (日本語版)', enName: 'Home Screen (JP UI)', projectTitle: 'Touchaku Wake', version: 'JP' },
+    { src: '/JAVAR_touchaku_train route.png', jpName: '電車ルート設定 (日本語版)', enName: 'Train Route Setup (JP UI)', projectTitle: 'Touchaku Wake', version: 'JP' },
+    { src: '/JAVAR_touchaku_live tracking.png', jpName: 'リアルタイム位置追跡 (日本語版)', enName: 'Live Tracking (JP UI)', projectTitle: 'Touchaku Wake', version: 'JP' },
+    { src: '/JAVAR_touchaku_saved location.png', jpName: '保存済み場所 (日本語版)', enName: 'Saved Locations (JP UI)', projectTitle: 'Touchaku Wake', version: 'JP' },
+    { src: '/JAVAR_touchaku icon.png', jpName: 'アプリ統合アイコン (日本語版)', enName: 'App Startup Icon (JP UI)', projectTitle: 'Touchaku Wake', version: 'JP' }
   ];
+
+  const touchakuEnScreenshots: LightboxImage[] = [
+    { src: '/touchaku_home.png', jpName: 'ホーム画面 (英語版)', enName: 'Home Screen (Global UI)', projectTitle: 'Touchaku Wake', version: 'EN' },
+    { src: '/touchaku_route.png', jpName: 'ルート設定 (英語版)', enName: 'Route Setup (Global UI)', projectTitle: 'Touchaku Wake', version: 'EN' },
+    { src: '/touchaku_track.png', jpName: '位置追跡画面 (英語版)', enName: 'Tracking Screen (Global UI)', projectTitle: 'Touchaku Wake', version: 'EN' },
+    { src: '/touchaku_setting.png', jpName: '設定画面 (英語版)', enName: 'Settings Screen (Global UI)', projectTitle: 'Touchaku Wake', version: 'EN' },
+    { src: '/touchaku_app.png', jpName: '起動ロゴ画面 (英語版)', enName: 'Startup Logo (Global UI)', projectTitle: 'Touchaku Wake', version: 'EN' }
+  ];
+
+  const currentTouchakuScreenshots = touchakuVersion === 'jp' ? touchakuJpScreenshots : touchakuEnScreenshots;
+  const allTouchakuScreenshots = [...touchakuJpScreenshots, ...touchakuEnScreenshots];
 
   // 2. AI Mikan Classifier State
   const [mikanType, setMikanType] = useState<'fresh' | 'rotten'>('fresh');
@@ -43,23 +69,24 @@ export default function Projects() {
 
   // 3. Azure AI Chat State
   const [activeAzureScreenIdx, setActiveAzureScreenIdx] = useState(0);
-  const azureScreenshots = [
-    { src: '/azure login ss.png', jpName: 'ログイン画面', enName: 'Login Screen' },
-    { src: '/azure create account ss.png', jpName: 'アカウント作成', enName: 'Registration' },
-    { src: '/azure ai chat ss.png', jpName: 'AI対話画面', enName: 'AI Conversation' },
-    { src: '/azure user chat ss.png', jpName: 'チャット履歴', enName: 'Chat History' },
-    { src: '/azure setting ss.png', jpName: 'パラメータ設定', enName: 'Model Settings' }
+  const azureScreenshots: LightboxImage[] = [
+    { src: '/azure login ss.png', jpName: 'ログイン画面', enName: 'Login Screen', projectTitle: 'Azure AI Chat' },
+    { src: '/azure create account ss.png', jpName: 'アカウント作成画面', enName: 'Registration Screen', projectTitle: 'Azure AI Chat' },
+    { src: '/azure ai chat ss.png', jpName: 'AI対話画面', enName: 'AI Conversation', projectTitle: 'Azure AI Chat' },
+    { src: '/azure user chat ss.png', jpName: 'チャット履歴画面', enName: 'Chat History', projectTitle: 'Azure AI Chat' },
+    { src: '/azure setting ss.png', jpName: 'パラメータ設定画面', enName: 'Model Settings', projectTitle: 'Azure AI Chat' }
   ];
 
   // 4. FitAI Trainer State
   const [activeFitAiScreenIdx, setActiveFitAiScreenIdx] = useState(0);
-  const fitAiScreenshots = [
-    { src: '/login ui fitAi.png', jpName: 'ログイン画面', enName: 'Login Screen' },
-    { src: '/dashboaedfitAi.png', jpName: 'ダッシュボード', enName: 'Dashboard Stats' },
-    { src: '/exercisefitAI.png', jpName: 'ポーズ姿勢解析', enName: 'AI Posture Tracker' },
-    { src: '/historyfitAI.png', jpName: 'トレーニング履歴', enName: 'Workout History' },
-    { src: '/profilefitAi.png', jpName: 'ユーザープロファイル', enName: 'Profile Settings' },
-    { src: '/settingfitAi.png', jpName: '詳細システム設定', enName: 'System Configurations' }
+  const fitAiScreenshots: LightboxImage[] = [
+    { src: '/login ui fitAi.png', jpName: 'ログイン画面', enName: 'Login Screen', projectTitle: 'FitAI Trainer' },
+    { src: '/dashboaedfitAi.png', jpName: 'ダッシュボード統計', enName: 'Dashboard Stats', projectTitle: 'FitAI Trainer' },
+    { src: '/exercisefitAI.png', jpName: 'ポーズ姿勢解析 (骨格推定)', enName: 'AI Posture Tracker (Skeleton)', projectTitle: 'FitAI Trainer' },
+    { src: '/historyfitAI.png', jpName: 'トレーニング履歴', enName: 'Workout History', projectTitle: 'FitAI Trainer' },
+    { src: '/profilefitAi.png', jpName: 'ユーザープロファイル', enName: 'Profile Settings', projectTitle: 'FitAI Trainer' },
+    { src: '/settingfitAi.png', jpName: '詳細システム設定 P1', enName: 'System Configurations P1', projectTitle: 'FitAI Trainer' },
+    { src: '/settingp2fitAi.png', jpName: '詳細システム設定 P2', enName: 'System Configurations P2', projectTitle: 'FitAI Trainer' }
   ];
 
   return (
@@ -163,34 +190,111 @@ export default function Projects() {
             </div>
 
             {/* Interactive Android App Screenshots Gallery */}
-            <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col md:flex-row gap-6 items-center min-h-[240px]">
-              {/* Screen Bezel mockup */}
-              <div className="relative aspect-[9/19] w-[110px] rounded-2xl overflow-hidden border-2 border-white/10 bg-black shadow-lg shrink-0">
+            <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col md:flex-row gap-6 items-center min-h-[260px]">
+              {/* Screen Bezel mockup (Clickable for Lightbox) */}
+              <div
+                onClick={() =>
+                  openLightbox(
+                    allTouchakuScreenshots,
+                    (touchakuVersion === 'jp' ? 0 : 5) + activeScreenIdx
+                  )
+                }
+                className="relative aspect-[9/19] w-[115px] rounded-2xl overflow-hidden border-2 border-white/10 bg-black shadow-lg shrink-0 cursor-pointer group transition-transform duration-300 hover:scale-105"
+                title={language === 'jp' ? 'クリックして拡大表示' : 'Click to enlarge'}
+              >
                 <Image
-                  src={touchakuScreenshots[activeScreenIdx].src}
-                  alt={touchakuScreenshots[activeScreenIdx].jpName}
+                  src={currentTouchakuScreenshots[activeScreenIdx].src}
+                  alt={currentTouchakuScreenshots[activeScreenIdx].jpName}
                   fill
-                  sizes="110px"
+                  sizes="115px"
                   className="object-cover"
                 />
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center space-y-1 backdrop-blur-[2px]">
+                  <ZoomIn className="w-6 h-6 text-white drop-shadow" />
+                  <span className="text-[9px] font-bold text-white tracking-wider font-mono">拡大表示</span>
+                </div>
               </div>
               
-              {/* Navigation options */}
-              <div className="flex-1 flex flex-col space-y-1.5 w-full font-mono text-[11px]">
-                <span className="text-[10px] font-bold text-sky-400 font-mono tracking-wider mb-1">SCREENSHOTS</span>
-                {touchakuScreenshots.map((screen, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveScreenIdx(idx)}
-                    className={`px-3 py-1.5 rounded-lg text-xs text-left transition-all cursor-pointer ${
-                      activeScreenIdx === idx
-                        ? 'bg-sky-500/10 border-sky-500/30 text-sky-400 font-semibold border'
-                        : 'bg-white/[0.01] border-transparent text-gray-text hover:text-white border'
-                    }`}
-                  >
-                    {language === 'jp' ? screen.jpName : screen.enName}
-                  </button>
-                ))}
+              {/* Controls & Navigation options */}
+              <div className="flex-1 flex flex-col space-y-3 w-full font-mono text-[11px]">
+                {/* Version Switcher */}
+                <div className="flex items-center justify-between pb-1 border-b border-white/5">
+                  <span className="text-[10px] font-bold text-sky-400 font-mono tracking-wider">UI VERSION</span>
+                  <div className="inline-flex p-0.5 rounded-lg bg-white/5 border border-white/10 text-[10px]">
+                    <button
+                      onClick={() => {
+                        setTouchakuVersion('jp');
+                        setActiveScreenIdx(0);
+                      }}
+                      className={`px-2 py-0.5 rounded-md transition-all font-semibold cursor-pointer ${
+                        touchakuVersion === 'jp'
+                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      🇯🇵 日本語版 (JP)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setTouchakuVersion('en');
+                        setActiveScreenIdx(0);
+                      }}
+                      className={`px-2 py-0.5 rounded-md transition-all font-semibold cursor-pointer ${
+                        touchakuVersion === 'en'
+                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      🌐 Global (EN)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Screenshot buttons */}
+                <div className="flex flex-col space-y-1.5">
+                  {currentTouchakuScreenshots.map((screen, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveScreenIdx(idx)}
+                      className={`px-3 py-1.5 rounded-lg text-xs text-left transition-all cursor-pointer flex items-center justify-between ${
+                        activeScreenIdx === idx
+                          ? 'bg-sky-500/10 border-sky-500/30 text-sky-400 font-semibold border'
+                          : 'bg-white/[0.01] border-transparent text-gray-text hover:text-white border'
+                      }`}
+                    >
+                      <span className="truncate">{language === 'jp' ? screen.jpName : screen.enName}</span>
+                      {activeScreenIdx === idx && (
+                        <span
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openLightbox(
+                              allTouchakuScreenshots,
+                              (touchakuVersion === 'jp' ? 0 : 5) + idx
+                            );
+                          }}
+                          className="text-[10px] text-sky-400 hover:underline flex items-center space-x-1 shrink-0 ml-2"
+                        >
+                          <ZoomIn className="w-3 h-3" />
+                          <span>拡大</span>
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Open Full Lightbox Button */}
+                <button
+                  onClick={() =>
+                    openLightbox(
+                      allTouchakuScreenshots,
+                      (touchakuVersion === 'jp' ? 0 : 5) + activeScreenIdx
+                    )
+                  }
+                  className="mt-1 w-full py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/20 transition-all text-xs font-semibold flex items-center justify-center space-x-1.5 cursor-pointer"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  <span>{language === 'jp' ? '全画面ギャラリーを開く (10枚)' : 'Open Fullscreen Gallery (10 Screens)'}</span>
+                </button>
               </div>
             </div>
           </TiltCard>
@@ -306,12 +410,16 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* Interactive Browser Screenshots Gallery (Matching Touchaku app screenshot UI logic) */}
+            {/* Interactive Browser Screenshots Gallery */}
             <div className="w-full bg-black/40 rounded-xl border border-white/5 p-4 flex flex-col gap-4 min-h-[300px]">
-              {/* Browser Bezel mockup */}
-              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 bg-black shadow-lg">
+              {/* Browser Bezel mockup (Clickable for Lightbox) */}
+              <div
+                onClick={() => openLightbox(azureScreenshots, activeAzureScreenIdx)}
+                className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 bg-black shadow-lg cursor-pointer group"
+                title={language === 'jp' ? 'クリックして拡大表示' : 'Click to enlarge'}
+              >
                 {/* Window header */}
-                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none">
+                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none z-10 relative">
                   <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
                   <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
@@ -325,14 +433,27 @@ export default function Projects() {
                     alt={azureScreenshots[activeAzureScreenIdx].jpName}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center space-y-1 backdrop-blur-[2px]">
+                    <ZoomIn className="w-7 h-7 text-white drop-shadow" />
+                    <span className="text-xs font-bold text-white tracking-wider font-mono">クリックで拡大表示</span>
+                  </div>
                 </div>
               </div>
               
               {/* Navigation options */}
               <div className="flex flex-col space-y-1.5 w-full font-mono text-[11px]">
-                <span className="text-[10px] font-bold text-purple-400 font-mono tracking-wider mb-1">SCREENSHOTS</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-purple-400 font-mono tracking-wider">SCREENSHOTS</span>
+                  <button
+                    onClick={() => openLightbox(azureScreenshots, activeAzureScreenIdx)}
+                    className="text-[10px] text-purple-400 hover:underline flex items-center space-x-1 cursor-pointer"
+                  >
+                    <Maximize2 className="w-3 h-3" />
+                    <span>{language === 'jp' ? '全画面ギャラリー' : 'Fullscreen'}</span>
+                  </button>
+                </div>
                 <div className="grid grid-cols-2 gap-1.5">
                   {azureScreenshots.map((screen, idx) => (
                     <button
@@ -383,7 +504,16 @@ export default function Projects() {
 
               {/* Navigation options */}
               <div className="flex flex-col space-y-2 font-mono text-[11px]">
-                <span className="text-[10px] font-bold text-pink-400 font-mono tracking-wider mb-1">SCREENSHOTS</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-pink-400 font-mono tracking-wider">SCREENSHOTS</span>
+                  <button
+                    onClick={() => openLightbox(fitAiScreenshots, activeFitAiScreenIdx)}
+                    className="text-[10px] text-pink-400 hover:underline flex items-center space-x-1 cursor-pointer"
+                  >
+                    <Maximize2 className="w-3 h-3" />
+                    <span>{language === 'jp' ? '全画面ギャラリー (7枚)' : 'Fullscreen (7 Screens)'}</span>
+                  </button>
+                </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {fitAiScreenshots.map((screen, idx) => (
                     <button
@@ -402,12 +532,16 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* Right Content (Mockup Desktop Window) */}
+            {/* Right Content (Mockup Desktop Window - Clickable for Lightbox) */}
             <div className="lg:col-span-5 flex justify-center items-center bg-black/40 rounded-xl border border-white/5 p-4 h-full min-h-[350px]">
               {/* Browser Bezel mockup */}
-              <div className="relative aspect-[1272/826] w-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl transition-transform duration-300 hover:scale-105">
+              <div
+                onClick={() => openLightbox(fitAiScreenshots, activeFitAiScreenIdx)}
+                className="relative aspect-[1272/826] w-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl transition-transform duration-300 hover:scale-102 cursor-pointer group"
+                title={language === 'jp' ? 'クリックして拡大表示' : 'Click to enlarge'}
+              >
                 {/* Window header */}
-                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none">
+                <div className="h-6 bg-white/[0.04] border-b border-white/[0.06] px-3 flex items-center space-x-1.5 shrink-0 select-none z-10 relative">
                   <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
                   <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
@@ -421,9 +555,13 @@ export default function Projects() {
                     alt={fitAiScreenshots[activeFitAiScreenIdx].jpName}
                     fill
                     sizes="(max-width: 640px) 100vw, 50vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                     priority
                   />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center space-y-1.5 backdrop-blur-[2px]">
+                    <ZoomIn className="w-8 h-8 text-white drop-shadow" />
+                    <span className="text-xs font-bold text-white tracking-wider font-mono">クリックで拡大表示</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -431,6 +569,15 @@ export default function Projects() {
 
         </div>
       </div>
+
+      {/* Fullscreen Lightbox Modal */}
+      <ImageLightbox
+        isOpen={lightboxOpen}
+        images={lightboxImages}
+        currentIndex={lightboxIndex}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={(newIdx) => setLightboxIndex(newIdx)}
+      />
     </section>
   );
 }
