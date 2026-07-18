@@ -253,19 +253,21 @@ export default function Skills() {
                   {category.skills.map((skill, sIdx) => (
                     <div
                       key={sIdx}
-                      className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-white/[0.03] transition-colors"
+                      className="flex items-start justify-between gap-2 py-2 px-2 rounded-lg hover:bg-white/[0.03] transition-colors"
                     >
-                      <div className="flex items-center space-x-2.5 truncate mr-2">
+                      <div className="flex items-start space-x-2.5 min-w-0 flex-1">
                         {skill.icon && (
-                          <span className="p-1 rounded bg-white/5 text-gray-300 shrink-0">
+                          <span className="p-1 rounded bg-white/5 text-gray-300 shrink-0 mt-0.5">
                             {skill.icon}
                           </span>
                         )}
-                        <span className="text-xs md:text-sm font-medium text-foreground/90 truncate">
+                        <span className="text-xs md:text-sm font-medium text-foreground/90 leading-snug break-words">
                           {skill.name}
                         </span>
                       </div>
-                      {renderLevelBadge(skill.level)}
+                      <div className="shrink-0 pt-0.5">
+                        {renderLevelBadge(skill.level)}
+                      </div>
                     </div>
                   ))}
                 </div>
